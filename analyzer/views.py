@@ -68,7 +68,7 @@ def home(request):
 
             # C. ML Performance Est
             ml_est = MLEstimator(df, target_col, task_type)
-            ml_score, ml_std = ml_est.estimate_performance()
+            ml_score, ml_std, best_model_name = ml_est.estimate_performance()
 
             # D. Cost Model
             cost_model = CostModel(context_data)
@@ -82,8 +82,8 @@ def home(request):
             decider = DecisionEngine(ml_score, base_score, cost_res[0], risk_score)
             recommendation, reasons = decider.make_decision()
 
-            # G. Explanation
-            explainer = ExplainabilityReport(stats, base_score, ml_score, ml_std, cost_res, risk_score, recommendation, reasons)
+            # G. Explanation, passing best_model_name
+            explainer = ExplainabilityReport(stats, base_score, ml_score, ml_std, cost_res, risk_score, recommendation, reasons, best_model_name)
             report_text = explainer.generate_report()
 
             # Clean up file?
@@ -97,7 +97,8 @@ def home(request):
                 'ml_score': ml_score,
                 'cost_res': cost_res,
                 'risk_score': risk_score,
-                'reasons': reasons
+                'reasons': reasons,
+                'best_model': best_model_name 
             }
             return render(request, 'analyzer/results.html', context)
 

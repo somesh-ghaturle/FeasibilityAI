@@ -1,5 +1,5 @@
 class ExplainabilityReport:
-    def __init__(self, data_stats, baseline_score, ml_score, ml_std, cost_data, risk_score, recommendation, reasons):
+    def __init__(self, data_stats, baseline_score, ml_score, ml_std, cost_data, risk_score, recommendation, reasons, best_model_name="N/A"):
         self.stats = data_stats
         self.baseline = baseline_score
         self.ml_score = ml_score
@@ -8,6 +8,7 @@ class ExplainabilityReport:
         self.risk = risk_score
         self.recommendation = recommendation
         self.reasons = reasons
+        self.best_model_name = best_model_name
 
     def generate_report(self):
         report = f"""
@@ -29,12 +30,18 @@ Reasoning:
 2. PERFORMANCE PROJECTIONS
 - Baseline (Rules/Simple): {self.baseline:.2%}
 - ML Model Est.: {self.ml_score:.2%} (±{self.ml_std:.2%})
+  [Best Model: {self.best_model_name}]
 - Lift: {self.ml_score - self.baseline:+.2%}
 
 3. COST ROI ANALYSIS
 - Rule-based (1yr): ${self.cost[1]:,.0f}
 - ML-based (1yr):   ${self.cost[2]:,.0f}
 - Cost Ratio: {self.cost[0]:.1f}x (ML is {self.cost[0]:.1f} times costlier)
+-----------------------------------------
+[Cost Logic Breakdown]
+* Rule Cost = (Dev Hours * Rate) + (Maint * 12)
+* ML Cost   = (Dev Hours * Rate) + Training + (Inference * 12) + (Maint * 12)
+-----------------------------------------
 
 4. RISK PROFILE
 - Aggregate Risk Score: {self.risk:.2f} / 1.0

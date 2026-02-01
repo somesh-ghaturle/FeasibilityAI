@@ -56,7 +56,25 @@ Companies jump into AI without asking:
    python manage.py migrate
    ```
 
-## 🛠️ How to Use This Tool
+## � Cost Calculation Logic
+The system uses a Total Cost of Ownership (TCO) model over a 1-year period to calculate the "AI Tax".
+
+**Formula:**
+$$ \text{Cost Ratio} = \frac{\text{Total ML Cost (1 Year)}}{\text{Total Rule Cost (1 Year)}} $$
+
+**Rule-Based Cost:**
+- **Development:** $\text{Hours} \times \text{Hourly Rate}$
+- **Maintenance:** $\text{Monthly Cost} \times 12$
+
+**AI/ML Cost:**
+- **Development:** $\text{Hours} \times \text{Hourly Rate}$
+- **Training:** One-time compute / data labeling cost.
+- **Inference:** $\text{Monthly Cloud Cost} \times 12$
+- **Maintenance:** $\text{Monthly Retraining/Monitoring} \times 12$
+
+*If the Cost Ratio > 1.0, AI is more expensive. The system demands significantly higher accuracy ("Lift") to justify high cost ratios.*
+
+## �🛠️ How to Use This Tool
 
 1. **Start the Application**
    ```bash
