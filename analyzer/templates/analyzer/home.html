@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>FeasibilityAI - Feasibility Engine</title>
+    <style>
+        body { font-family: sans-serif; max-width: 800px; margin: 0 auto; padding: 20px; line-height: 1.6; }
+        .container { background: #f9f9f9; padding: 30px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        h1 { color: #333; }
+        .form-group { margin-bottom: 15px; }
+        label { display: block; margin-bottom: 5px; font-weight: bold; }
+        input[type="text"], input[type="number"], select { width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px; box-sizing: border-box; }
+        input[type="file"] { margin-top: 5px; }
+        button { background: #007bff; color: white; padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer; font-size: 16px; }
+        button:hover { background: #0056b3; }
+        .error { color: #dc3545; background: #f8d7da; padding: 10px; border-radius: 4px; margin-bottom: 20px; }
+        .section-title { border-bottom: 1px solid #ccc; padding-bottom: 5px; margin-top: 20px; margin-bottom: 10px; color: #666; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🧠 FeasibilityAI</h1>
+        <p>Decide whether a problem should be solved with AI/ML or simple rules.</p>
+
+        {% if error %}
+        <div class="error">{{ error }}</div>
+        {% endif %}
+
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            
+            <div class="section-title">1. Task</div>
+            <div class="form-group">
+                <label>Task Type</label>
+                <select name="task_type">
+                    <option value="classification">Classification</option>
+                    <option value="regression">Regression</option>
+                </select>
+            </div>
+            
+            <div class="section-title">2. Data</div>
+            <div class="form-group">
+                <label>Upload Dataset (CSV/Excel)</label>
+                <input type="file" name="dataset" required>
+            </div>
+            <div class="form-group">
+                <label>Target Column Name (The label to predict)</label>
+                <input type="text" name="target_col" placeholder="e.g., churn, price, label" required>
+            </div>
+
+            <div class="section-title">3. Constraints & Context</div>
+            <div class="form-group">
+                <label>Decision Criticality</label>
+                <select name="criticality">
+                    <option value="low">Low (Internal tool, experimental)</option>
+                    <option value="medium" selected>Medium (Customer facing, non-vital)</option>
+                    <option value="high">High (Medical, Financial, Safety)</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label>Est. Rule-Based Dev + Maintenance Hours</label>
+                <input type="number" name="rule_dev_hours" value="40">
+            </div>
+            <div class="form-group">
+                <label>Est. ML Dev Hours</label>
+                <input type="number" name="ml_dev_hours" value="120">
+            </div>
+            
+            <button type="submit">Evaluate Feasibility</button>
+        </form>
+    </div>
+</body>
+</html>
